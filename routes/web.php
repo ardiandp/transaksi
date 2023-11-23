@@ -27,7 +27,7 @@ Route::get('/', function () {
 }); */
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+Route::post('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/norek', [NorekController::class, 'index'])->name('norek');
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
