@@ -28,6 +28,15 @@ Route::get('/', function () {
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/norek', [NorekController::class, 'index'])->name('norek');
+
+// no rekening dengan yajra datatable
+//Route::get('/norek', [NorekController::class, 'index'])->name('norek');
+//Route::get('norek', [NorekController::class, 'index'])->name('norek.index');
+//Route::get('norek-data', [NorekController::class, 'getData'])->name('norek.data');
+Route::resource('norek', NorekController::class);
+Route::get('norek/{id}/edit', [NorekController::class, 'edit'])->name('norek.edit');
+Route::put('norek/{id}', [NorekController::class, 'update'])->name('norek.update');
+
+
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
