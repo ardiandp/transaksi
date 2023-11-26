@@ -28,18 +28,23 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                UI Elements
+               MASTER
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../UI/general.html" class="nav-link">
+                <a href="{{url ('users') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>General</p>
+                  <p>Users</p>
                 </a>
               </li>          
-             
+              <li class="nav-item">
+                <a href="{{ url ('norek') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Norek</p>
+                </a>
+              </li>        
             </ul>
           </li>        
      
