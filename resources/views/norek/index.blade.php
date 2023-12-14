@@ -43,8 +43,7 @@
 
 
   
-<div class="container">
-    <h2>Data Norek</h2>
+<div class="container">   
     <table class="table table-bordered" id="norek-table">
         <thead>
             <tr>
@@ -150,17 +149,7 @@
 <!-- coding edit -->
 
 </div>
-<!-- /.card -->
-</div>
-<!-- /.col -->
-</div>
-<!-- /.row -->
-</div>
-<!-- /.container-fluid -->
-</section>
-<!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+@extends('layout.footer')
    
 </body>
 </html>

@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NorekController;
-
+use App\http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 
 
 /*
@@ -29,6 +30,9 @@ Route::get('/', function () {
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::post('/home', [HomeController::class, 'index'])->name('home');
 
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/data', [UserController::class, 'getData'])->name('user.data');
+
 // no rekening dengan yajra datatable
 //Route::get('/norek', [NorekController::class, 'index'])->name('norek');
 //Route::get('norek', [NorekController::class, 'index'])->name('norek.index');
@@ -40,3 +44,7 @@ Route::put('norek/{id}', [NorekController::class, 'update'])->name('norek.update
 
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
+
+// ini buat admin 
+Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/admin/data', [AdminController::class, 'getData'])->name('admin.data');

@@ -44,6 +44,12 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>Norek</p>
                 </a>
+              </li>     
+              <li class="nav-item">
+                <a href="{{ url ('admin') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Admin</p>
+                </a>
               </li>        
             </ul>
           </li>        
