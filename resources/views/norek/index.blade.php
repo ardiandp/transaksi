@@ -37,8 +37,12 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">DataTable with minimal features & hover style</h3>
+              <div class="card-header">              
+        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#addModal">Add Data</button>
+        <table class="table table-bordered" id="norekTable">
+            <!-- Tabel Data akan ditampilkan di sini -->
+        </table>
+    
               </div>
 
 
@@ -58,12 +62,15 @@
     </table>
 </div>
    
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#norek-table').DataTable({
+<!-- Tambahkan di dalam tag <head> atau di akhir tag <body> -->
+
+<script>
+    $(document).ready(function() {
+        // Inisialisasi DataTables
+        var norekTable = $('#norekTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('norek.index') }}",
+            ajax: '{!! route('norek.index') !!}',
             columns: [
                 { data: 'id', name: 'id' },
                 { data: 'atas_nama', name: 'atas_nama' },
@@ -73,71 +80,191 @@
                 { data: 'action', name: 'action', orderable: false, searchable: false },
             ]
         });
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        // ...
 
-        // Handle edit
-        $('#norek-table').on('click', '.edit', function(){
-            var id = $(this).data('id');
-            $.ajax({
-                url: "{{ url('norek') }}" + '/' + id + '/edit',
-                type: "GET",
-                dataType: "json",
-                success: function(data){
-                    $('#editModal').modal('show');
-                    $('#edit_id').val(data.id);
-                    $('#edit_nomor_rekening').val(data.nomor_rekening);
-                    $('#edit_nama_pemilik').val(data.nama_pemilik);
-                }
-            });
+        // Tampilkan modal saat tombol "Add Data" diklik
+        $('#addModal').on('show.bs.modal', function() {
+            // Bersihkan form saat modal muncul
+            $('#addForm')[0].reset();
         });
 
-        // Handle update
-        $('#editForm').on('submit', function(e){
+        // Tambahkan event submit pada form untuk menangani AJAX
+        $('#addForm').submit(function(e) {
             e.preventDefault();
-            var id = $('#edit_id').val();
-            var url = "{{ url('norek') }}" + '/' + id;
 
             $.ajax({
-                url: url,
-                type: "PUT",
-                data: $('#editForm').serialize(),
-                success: function(response){
-                    $('#editModal').modal('hide');
-                    $('#norek-table').DataTable().ajax.reload();
-                    alert(response.success);
+                type: 'POST',
+                url: '{!! route('norek.store') !!}',
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Tampilkan pesan sukses jika penyimpanan berhasil
+                    alert(response.message);
+
+                    // Perbarui tabel dengan data baru
+                    norekTable.ajax.reload();
+
+                    // Tutup modal
+                    $('#addModal').modal('hide');
+                },
+                error: function(error) {
+                    // Tampilkan pesan error jika ada kesalahan
+                    alert('Error saving data. Please try again.');
                 }
             });
         });
     });
 </script>
 
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+<!-- update nore-->
+<!-- resources/views/norek/index.blade.php -->
+
+<script>
+    // ...
+
+    function editNorek(id) {
+        // Mengambil data norek berdasarkan ID
+        $('.edit').click(function() {
+            var id = $(this).data('id');
+
+            // Mengambil data norek berdasarkan ID
+            $.ajax({
+                type: 'GET',
+                url: '/norek/' + id + '/edit',
+                success: function(response) {
+                    // Mengisi form edit dengan data yang diambil
+                    $('#editForm input[name="id"]').val(response.norek.id);
+                    $('#editForm input[name="atas_nama"]').val(response.norek.atas_nama);
+                    $('#editForm input[name="alias"]').val(response.norek.alias);
+                    $('#editForm input[name="norek"]').val(response.norek.norek);
+                    $('#editForm input[name="bank"]').val(response.norek.bank);
+
+                    // Menampilkan modal edit
+                    $('#editModal').modal('show');
+                },
+                error: function(error) {
+                    // Menampilkan pesan error jika ada kesalahan
+                    alert('Error loading data for editing. Please try again.');
+                }
+            });
+        });
+
+    }
+
+    </script>
+    
+<script>
+    function deleteData(id) {
+        // Konfirmasi penghapusan
+        if (confirm('Are you sure you want to delete this data?')) {
+            // Menghapus data norek berdasarkan ID
+            $.ajax({
+                type: 'DELETE',
+                url: '/transaksi/' + id,
+                success: function(response) {
+                    // Tampilkan pesan sukses jika penghapusan berhasil
+                    alert(response.message);
+
+                    // Perbarui tabel dengan data yang telah dihapus
+                    norekTable.ajax.reload();
+                },
+                error: function(error) {
+                    // Tampilkan pesan error jika ada kesalahan
+                    alert('Error deleting data. Please try again.');
+                }
+            });
+        }
+    }
+  
+</script>
+<script>
+
+    $('#editForm').submit(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'PUT',
+            url: '/norek/' + $('#editForm input[name="id"]').val(),
+            data: $(this).serialize(),
+            success: function(response) {
+                // Menampilkan pesan sukses jika penyimpanan berhasil
+                alert(response.message);
+
+                // Perbarui tabel dengan data yang telah diubah
+                norekTable.ajax.reload();
+
+                // Tutup modal
+                $('#editModal').modal('hide');
+            },
+            error: function(error) {
+                // Menampilkan pesan error jika ada kesalahan
+                alert('Error updating data. Please try again.');
+            }
+        });
+    });
+</script>
+
+<!-- js untuk hapus -->
+<script>
+    // ...
+
+    // Tambahkan event klik pada tombol delete di setiap baris
+    $('#norek-table').on('click', '.delete', function() {
+        var id = $(this).data('id');
+
+        // Konfirmasi penghapusan
+        if (confirm('Are you sure you want to delete this data?')) {
+            // Menghapus data norek berdasarkan ID
+            $.ajax({
+                type: 'DELETE',
+                url: '/norek/' + id,
+                success: function(response) {
+                    // Tampilkan pesan sukses jika penghapusan berhasil
+                    alert(response.message);
+
+                    // Perbarui tabel dengan data yang telah dihapus
+                    norekTable.ajax.reload();
+                },
+                error: function(error) {
+                    // Tampilkan pesan error jika ada kesalahan
+                    alert('Error deleting data. Please try again.');
+                }
+            });
+        }
+    });
+
+    // ...
+</script>
+
+<!-- modal Add --> 
+<!-- Modal untuk Menambah Data -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Norek</h5>
+                <h5 class="modal-title" id="addModalLabel">Add Data</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="editForm">
-                    <input type="hidden" name="_method" value="PUT">
-                    <input type="hidden" id="edit_id" name="id">
+                <form id="addForm">
+                    @csrf
                     <div class="form-group">
-                        <label for="edit_nomor_rekening">Nomor Rekening</label>
-                        <input type="text" class="form-control" id="edit_nomor_rekening" name="nomor_rekening">
+                        <label for="atas_nama">Atas Nama:</label>
+                        <input type="text" class="form-control" id="atas_nama" name="atas_nama" required>
                     </div>
                     <div class="form-group">
-                        <label for="edit_nama_pemilik">Nama Pemilik</label>
-                        <input type="text" class="form-control" id="edit_nama_pemilik" name="nama_pemilik">
+                        <label for="alias">Alias:</label>
+                        <input type="text" class="form-control" id="alias" name="alias" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <div class="form-group">
+                        <label for="norek">Nomor Rekening:</label>
+                        <input type="text" class="form-control" id="norek" name="norek" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bank">Bank:</label>
+                        <input type="text" class="form-control" id="bank" name="bank" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Data</button>
                 </form>
             </div>
         </div>
@@ -145,8 +272,58 @@
 </div>
 
 
+<!-- Modal untuk Edit Data -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="id">
+                    <div class="form-group">
+                        <label for="atas_nama">Atas Nama:</label>
+                        <input type="text" class="form-control" id="edit_atas_nama" name="atas_nama" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="alias">Alias:</label>
+                        <input type="text" class="form-control" id="edit_alias" name="alias" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="norek">Nomor Rekening:</label>
+                        <input type="text" class="form-control" id="edit_norek" name="norek" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bank">Bank:</label>
+                        <input type="text" class="form-control" id="edit_bank" name="bank" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Data</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- coding edit -->
+
+<!-- ... (Bagian lain dari kode HTML) ... -->
+
+
+<!-- ... (Bagian lain dari kode HTML) ... -->
+
+
+
+
+
+
+
+
+
 
 </div>
 @extends('layout.footer')

@@ -73,11 +73,9 @@
         });
     </script>
 
-</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
 
+</div>
+@extends('layout.footer')
+   
+</body>
+</html>

@@ -1,19 +1,16 @@
-<!-- resources/views/users/index.blade.php -->
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataTables with Bootstrap 4</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
-    <!-- Bootstrap CSS (Jika belum ada) -->
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <title>Data Norek</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 </head>
+<body>
+
 
 @include('layout.header')
 @include('layout.Sidebar')
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -32,9 +29,9 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-<body>
 
-<section class="content">
+   <!-- Main content -->
+   <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -42,8 +39,10 @@
               <div class="card-header">
                 <h3 class="card-title">DataTable with minimal features & hover style</h3>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
+
+
+  
+<div class="container">   
         <table class="table table-bordered" id="userTable">
             <thead>
                 <tr>
@@ -67,12 +66,7 @@
     </div><!-- /.content-wrapper -->
   
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-    <!-- Bootstrap JS (Jika belum ada) -->
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
-
+   
     <script>
         $(document).ready(function() {
             $('#userTable').DataTable({
@@ -89,5 +83,9 @@
         });
     </script>
 
+
+</div>
+@extends('layout.footer')
+   
 </body>
 </html>

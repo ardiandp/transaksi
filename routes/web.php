@@ -40,6 +40,8 @@ Route::get('/users/data', [UserController::class, 'getData'])->name('user.data')
 Route::resource('norek', NorekController::class);
 Route::get('norek/{id}/edit', [NorekController::class, 'edit'])->name('norek.edit');
 Route::put('norek/{id}', [NorekController::class, 'update'])->name('norek.update');
+Route::delete('/norek/{id}', [NorekController::class,'destroy'])->name('norek.destroy');
+
 
 
 
