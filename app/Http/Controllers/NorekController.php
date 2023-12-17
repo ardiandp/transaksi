@@ -65,18 +65,18 @@ class NorekController extends Controller
 
     // app/Http/Controllers/NorekController.php
 
-public function destroy($id)
-{
-    $norek = Norek::find($id);
-
-    if (!$norek) {
-        return response()->json(['message' => 'Data not found.'], 404);
+    public function destroy($id)
+    {
+        $norek = Norek::find($id);
+    
+        if (!$norek) {
+            return response()->json(['message' => 'Data not found.'], 404);
+        }
+    
+        $norek->delete();
+    
+        return response()->json(['message' => 'Data deleted successfully.']);
     }
-
-    $norek->delete();
-
-    return response()->json(['message' => 'Data deleted successfully.']);
-}
 
     //
 }  

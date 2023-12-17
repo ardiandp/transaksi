@@ -175,8 +175,8 @@
     }
   
 </script>
-<script>
 
+<script>
     $('#editForm').submit(function(e) {
         e.preventDefault();
 
@@ -204,18 +204,13 @@
 
 <!-- js untuk hapus -->
 <script>
-    // ...
-
-    // Tambahkan event klik pada tombol delete di setiap baris
-    $('#norek-table').on('click', '.delete', function() {
-        var id = $(this).data('id');
-
+    function deleteData(id) {
         // Konfirmasi penghapusan
         if (confirm('Are you sure you want to delete this data?')) {
             // Menghapus data norek berdasarkan ID
             $.ajax({
                 type: 'DELETE',
-                url: '/norek/' + id,
+                url: '{{ route('norek.destroy', ['id' => '__id__']) }}'.replace('__id__', id),
                 success: function(response) {
                     // Tampilkan pesan sukses jika penghapusan berhasil
                     alert(response.message);
@@ -229,10 +224,33 @@
                 }
             });
         }
-    });
-
-    // ...
+    }
 </script>
+
+<script>
+    function deleteData(id) {
+        // Konfirmasi penghapusan
+        if (confirm('Are you sure you want to delete this data?')) {
+            // Menghapus data norek berdasarkan ID
+            $.ajax({
+                type: 'DELETE',
+                url: '{{ route('norek.destroy', ['id' => '__id__']) }}'.replace('__id__', id),
+                success: function(response) {
+                    // Tampilkan pesan sukses jika penghapusan berhasil
+                    alert(response.message);
+
+                    // Perbarui tabel dengan data yang telah dihapus
+                    norekTable.ajax.reload();
+                },
+                error: function(error) {
+                    // Tampilkan pesan error jika ada kesalahan
+                    alert('Error deleting data. Please try again.');
+                }
+            });
+        }
+    }
+</script>
+
 
 <!-- modal Add --> 
 <!-- Modal untuk Menambah Data -->

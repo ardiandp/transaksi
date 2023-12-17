@@ -50,7 +50,13 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admin</p>
                 </a>
-              </li>        
+              </li>    
+              <li class="nav-item">
+                <a href="{{ url ('produk') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>produk</p>
+                </a>
+              </li>         
             </ul>
           </li>        
      
