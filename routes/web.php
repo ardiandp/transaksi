@@ -33,11 +33,19 @@ Route::get('/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('
 Route::put('/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
 Route::delete('/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
 
-// master 
+// master gerai
 Route::get('/master/gerai', [MasterController::class, 'gerai'])->name('master.gerai');
 Route::post('/master/geraistore', [MasterController::class, 'geraistore'])->name('master.geraistore');
 Route::delete('/master/gerai/{id}', [MasterController::class, 'geraidestroy'])->name('master.geraidestroy');
 Route::put('/master/gerai/{id}', [MasterController::class, 'geraiupdate'])->name('master.geraiupdate');
+
+//master perawatan 
+Route::get('/master/perawatan', [MasterController::class, 'perawatan'])->name('master.perawatan');
+Route::get('/master/perawatancreate', [MasterController::class, 'perawatancreate'])->name('master.perawatancreate');
+Route::post('/master/perawatanstore', [MasterController::class, 'perawatanstore'])->name('master.perawatanstore');
+Route::get('/master/perawatan/{id}/edit', [MasterController::class, 'perawatanedit'])->name('master.perawatanedit');
+Route::delete('/master/perawatan/{id}', [MasterController::class, 'perawatandestroy'])->name('master.perawatandestroy');
+Route::put('/master/perawatan/{id}', [MasterController::class, 'perawatanupdate'])->name('master.perawatanupdate');
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
