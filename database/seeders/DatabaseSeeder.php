@@ -5,6 +5,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Transaksi;
+use App\Models\Gerai;
+use App\Models\Perawatan;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -20,5 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         Transaksi::factory(10)->create();
+        Gerai::factory(10)->create();
+        Perawatan::factory(10)->create();
     }
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TransaksiController;
-use App\Models\Transaksi;
+use App\Http\Controllers\MasterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +32,13 @@ Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaks
 Route::get('/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
 Route::put('/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
 Route::delete('/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
+
+// master 
+Route::get('/master/gerai', [MasterController::class, 'gerai'])->name('master.gerai');
+Route::post('/master/geraistore', [MasterController::class, 'geraistore'])->name('master.geraistore');
+Route::delete('/master/gerai/{id}', [MasterController::class, 'geraidestroy'])->name('master.geraidestroy');
+Route::put('/master/gerai/{id}', [MasterController::class, 'geraiupdate'])->name('master.geraiupdate');
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 
