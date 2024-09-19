@@ -17,7 +17,8 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('master/gerai');
+            session()->flash('success', 'Login Berhasil');
+            return redirect()->intended('home');
         }
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',

@@ -7,7 +7,10 @@ use App\Models\Transaksi;
 
 class TransaksiController extends Controller
 {
-    // app/Http/Controllers/TransaksiController.php
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
 public function index()
 {

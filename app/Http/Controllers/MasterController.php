@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class MasterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     
     public function gerai()
     {
@@ -127,6 +131,83 @@ class MasterController extends Controller
         $perawatan->delete();
         return redirect()->route('master.perawatan')->with('success', 'Data berhasil dihapus');
     }
+
+
+    
+    public function users()
+    {
+        $users = User::all();
+        return view('master.users.index', compact('users'));
+    }
+
+    
+    public function usersstore(Request $request)
+    {
+        ($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed|min:8',
+            'role' => 'required|in:admin,manager,kasir',
+        ]);
+
+        $user = new User([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+        ]);
+
+        if ($user->save()) {
+            return redirect()->route('master.users')->with('success', 'Data berhasil disimpan');
+        } else {
+            return back()->with('error', 'Data gagal disimpan')->withInput();
+        }
+
+        //return redirect()->route('master.users')->with('success', 'Data berhasil disimpan');
+    }
+
+    
+    public function usersupdate(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'password' => 'nullable|confirmed|min:8',
+            'role' => 'required|string|max:255',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password ? bcrypt($request->password) : $user->password,
+            'role' => $request->role,
+        ]);
+
+        return redirect()->route('master.users')->with('success', 'Data berhasil diupdate');
+    }
+
+    
+    public function usersdestroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('master.users')->with('success', 'Data berhasil dihapus');
+    }
+
+    
+    public function resetpassword($id)
+    {
+        $user = User::findOrFail($id);
+        $user->password = bcrypt('password');
+        $user->save();
+
+        return redirect()->route('master.users')->with('success', 'Password berhasil direset');
+    }
+
+    
 
     
 }
