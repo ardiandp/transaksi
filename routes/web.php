@@ -30,9 +30,9 @@ Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi');
 Route::get('/transaksi/create', [TransaksiController::class, 'create'])->name('transaksi.create');
 Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
-Route::get('/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
+Route::get('/transaksi/{no_invoice}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
 Route::put('/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
-Route::delete('/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
+Route::delete('/transaksi/{no_invoice}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
 
 // master gerai
 Route::get('/master/gerai', [MasterController::class, 'gerai'])->name('master.gerai');

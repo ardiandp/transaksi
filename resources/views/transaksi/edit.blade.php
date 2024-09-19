@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <form action="{{ route('transaksi.update', $transaksi->id) }}" method="POST">
+    <form action="{{ route('transaksi.update', $transaksi->no_invoice) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -61,7 +61,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($transaksi->detailTransaksi as $key => $detail)
+                        @foreach ($transaksi_detail as $key => $detail)
                             <tr>
                                 <td>
                                     <input type="text" class="form-control" name="jenis_perawatan[]" value="{{ $detail->jenis_perawatan }}">
