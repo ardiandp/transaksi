@@ -25,17 +25,20 @@ public function create()
 
 public function store(Request $request)
 {
-    $transaksi = new Transaksi();
-    $transaksi->tanggal = $request->input('tanggal');
-    $transaksi->nama_gerai = $request->input('nama_gerai');
-    $transaksi->no_invoice = $request->input('no_invoice');
-    $transaksi->nama_customer = $request->input('nama_customer');
-    $transaksi->jenis_perawatan = $request->input('jenis_perawatan');
-    $transaksi->harga_treatment = $request->input('harga_treatment');
-    $transaksi->disc = $request->input('disc');
-    $transaksi->terapist = $request->input('terapist');
-    $transaksi->pembayaran = $request->input('pembayaran');
-    $transaksi->save();
+    $detail_transaksi = $request->input('nama_customer');
+    foreach ($detail_transaksi as $key => $value) {
+        $transaksi = new Transaksi();
+        $transaksi->tanggal = $request->input('tanggal');
+        $transaksi->nama_gerai = $request->input('nama_gerai');
+        $transaksi->no_invoice = $request->input('no_invoice');
+        $transaksi->nama_customer = $value;
+        $transaksi->jenis_perawatan = $request->input('jenis_perawatan')[$key];
+        $transaksi->harga_treatment = $request->input('harga_treatment')[$key];
+        $transaksi->disc = $request->input('disc')[$key];
+        $transaksi->terapist = $request->input('terapist')[$key];
+        $transaksi->pembayaran = $request->input('pembayaran')[$key];
+        $transaksi->save();
+    }
 
     session()->flash('success', 'Data berhasil disimpan');
     return redirect()->route('transaksi');
