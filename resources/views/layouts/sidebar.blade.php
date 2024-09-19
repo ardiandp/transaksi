@@ -47,13 +47,20 @@
 <div class="sidebar">
     <button class="accordion">Dashboard</button>
     <div class="panel">
-        <a class="nav-link" href="#">Dashboard</a>
+        <a class="nav-link" href="{{url('home')}}">Dashboard</a>
+        <a class="nav-link" href="{{ url('transaksi') }}">Transaksi</a>
     </div>
 
     <button class="accordion">Profile</button>
     <div class="panel">
         <a class="nav-link" href="#">Profile</a>
         <a class="nav-link" href="#">Change Password</a>
+    </div>
+    <button class="accordion">MASTER</button>
+    <div class="panel">
+        <a class="nav-link" href="{{ url('master/users')}}">Users</a>
+        <a class="nav-link" href="{{ url('master/perawatan')}}">Perawatan</a>
+        <a class="nav-link" href="{{ url('master/gerai')}}">Gerai</a>
     </div>
 
     <button class="accordion">Settings</button>
