@@ -47,7 +47,7 @@
 <div class="sidebar">
     <button class="accordion">Dashboard</button>
     <div class="panel">
-        <a class="nav-link" href="#">Dashboard</a>
+        <a class="nav-link" href="{{url('home')}}">Dashboard</a>
         <a class="nav-link" href="{{ url('transaksi') }}">Transaksi</a>
     </div>
 

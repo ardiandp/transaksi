@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Transaksi;
 use App\Models\Gerai;
 use App\Models\Perawatan;
+use App\Models\User;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -20,7 +21,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-
+        User::factory(10)->create();
         Transaksi::factory(10)->create();
         Gerai::factory(10)->create();
         Perawatan::factory(10)->create();
