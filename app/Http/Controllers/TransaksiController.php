@@ -41,7 +41,10 @@ public function index()
 
 public function create()
 {
-    return view('transaksi.create');
+    $last_invoice = Transaksi::orderBy('id', 'desc')->value('no_invoice');
+    $last_invoice = substr($last_invoice, 4);
+    $next_invoice = sprintf('INV-%05d', (int) $last_invoice + 1);
+    return view('transaksi.create', compact('next_invoice'));
 }
 
 public function store(Request $request)
@@ -74,22 +77,29 @@ public function edit($no_invoice)
 
 public function update(Request $request,  $no_invoice)
 {
-    $detail_transaksi = $request->input('nama_customer');
-    foreach ($detail_transaksi as $key => $value) {
-        $transaksi = Transaksi::find($request->input('id')[$key]);
-        $transaksi->tanggal = $request->input('tanggal')[$key];
-        $transaksi->nama_gerai = $request->input('nama_gerai')[$key];
-        $transaksi->no_invoice = $request->input('no_invoice')[$key];
-        $transaksi->nama_customer = $value;
-        $transaksi->jenis_perawatan = $request->input('jenis_perawatan')[$key];
-        $transaksi->harga_treatment = $request->input('harga_treatment')[$key];
-        $transaksi->disc = $request->input('disc')[$key];
-        $transaksi->terapist = $request->input('terapist')[$key];
-        $transaksi->pembayaran = $request->input('pembayaran')[$key];
-        $transaksi->save();
+    //dd($request->all());
+    $transaksi = Transaksi::where('no_invoice', $no_invoice)->get();
+
+    foreach ($transaksi as $index => $t) {
+        // Mendapatkan nilai dari input, jika array gunakan [0], jika field tunggal cukup ambil nilainya saja
+        $t->tanggal = $request->input('tanggal'); // Bukan array, langsung ambil nilai
+        $t->nama_gerai = $request->input('nama_gerai'); // Bukan array, langsung ambil nilai
+        $t->nama_customer = $request->input('nama_customer'); // Bukan array, langsung ambil nilai
+        
+        // Input yang berupa array, akses menggunakan $index
+        $t->jenis_perawatan = $request->input('jenis_perawatan')[$index] ?? null;
+        $t->harga_treatment = $request->input('harga_treatment')[$index] ?? null;
+        $t->disc = $request->input('disc')[$index] ?? null;
+        $t->jumlah = $request->input('jumlah')[$index] ?? null;
+        $t->komisi = $request->input('komisi')[$index] ?? null;
+        
+        // Simpan perubahan
+        $t->save();
     }
+    
     session()->flash('success', 'Data berhasil diupdate');
     return redirect()->route('transaksi');
+    
 }
 
 public function destroy($no_invoice)

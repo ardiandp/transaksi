@@ -21,7 +21,7 @@
                         @if(session('success'))
                             swal({
                                 title: "{{ session('success') }}",
-                                text: "Data berhasil dihapus",
+                                text: "Informasi",
                                 icon: "success",
                                 button: "Ok",
                             });

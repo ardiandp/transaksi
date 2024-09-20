@@ -23,7 +23,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="tanggal">Tanggal</label>
-                <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                <input type="date" class="form-control" id="tanggal" name="tanggal" value="<?php echo date('Y-m-d'); ?>" required>
             </div>
 
             <div class="form-group col-md-6">
@@ -35,7 +35,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="no_invoice">No Invoice</label>
-                <input type="text" class="form-control" id="no_invoice" name="no_invoice" required>
+                <input type="text" value="{{ $next_invoice}}" class="form-control" id="no_invoice" name="no_invoice" required>
             </div>
 
             <div class="form-group col-md-6">
