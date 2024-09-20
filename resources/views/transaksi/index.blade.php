@@ -21,7 +21,7 @@
                         @if(session('success'))
                             swal({
                                 title: "{{ session('success') }}",
-                                text: "Data berhasil dihapus",
+                                text: "Informasi",
                                 icon: "success",
                                 button: "Ok",
                             });
@@ -37,7 +37,8 @@
                                     <th>Nama Customer</th>
                                     <th>Jenis Perawatan</th>
                                     <th>Harga Treatment</th>                                  
-                                    <th>Terapist</th>                       
+                                    <th>Terapist</th>  
+                                    <th>Jumlah</th>                     
                                     <th>aksi</th>
                                 </tr>
                             </thead>
@@ -50,10 +51,11 @@
                                         <td>{{ $transaksi->nama_customer }}</td>
                                         <td>{{ $transaksi->jenis_perawatan }}</td>
                                         <td>Rp {{ number_format($transaksi->harga_treatment, 2) }}</td>                                       
-                                        <td>{{ $transaksi->terapist }}</td>                     
+                                        <td>{{ $transaksi->terapist }}</td>    
+                                        <td>{{ $transaksi->jml }}</td>                 
                                         <td>
-                                            <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                            <form action="{{ route('transaksi.destroy', $transaksi->id) }}" method="POST" class="d-inline">
+                                            <a href="{{ route('transaksi.edit', $transaksi->no_invoice) }}" class="btn btn-sm btn-primary">Edit</a>
+                                            <form action="{{ route('transaksi.destroy', $transaksi->no_invoice) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="btn btn-sm btn-danger">Hapus</button>

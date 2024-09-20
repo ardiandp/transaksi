@@ -6,6 +6,20 @@
         margin-top: 100px;
     }
 </style>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                    <script>
+                        @if(session('success'))
+                            swal({
+                                title: "{{ session('success') }}",
+                                text: "Data berhasil dihapus",
+                                icon: "success",
+                                button: "Ok",
+                            });
+                        @endif
+                    </script>
+
+                    
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4">Selamat Datang, {{ $user->name }}!</h1>

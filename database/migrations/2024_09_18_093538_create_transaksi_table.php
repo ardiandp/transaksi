@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('nama_gerai');
             $table->string('no_invoice');
             $table->string('nama_customer');
-            $table->string('jenis_perawatan');
-            $table->decimal('harga_treatment', 10, 2);
-            $table->decimal('disc', 10, 2);
-            $table->string('terapist');
-            $table->string('pembayaran'); // cash, transfer, qris
-            $table->decimal('jumlah', 10, 2);
-            $table->decimal('komisi', 10, 2);
+            $table->string('jenis_perawatan')->nullable();
+            $table->decimal('harga_treatment', 10, 2)->nullable();
+            $table->decimal('disc', 10, 2)->nullable();
+            $table->string('terapist')->nullable();
+            $table->string('pembayaran')->nullable(); // cash, transfer, qris
+            $table->decimal('jumlah', 10, 2)->nullable();
+            $table->decimal('komisi', 10, 2)->nullable();
             $table->timestamps();
         });
     }

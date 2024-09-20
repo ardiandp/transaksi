@@ -15,9 +15,10 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+}); */ 
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/theme', function () {
     return view('layouts.content');
 });
@@ -26,13 +27,12 @@ Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])
 
 
 // routes/web.php
-
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi');
 Route::get('/transaksi/create', [TransaksiController::class, 'create'])->name('transaksi.create');
 Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
-Route::get('/transaksi/{id}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
+Route::get('/transaksi/{no_invoice}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
 Route::put('/transaksi/{id}', [TransaksiController::class, 'update'])->name('transaksi.update');
-Route::delete('/transaksi/{id}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
+Route::delete('/transaksi/{no_invoice}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
 
 // master gerai
 Route::get('/master/gerai', [MasterController::class, 'gerai'])->name('master.gerai');
@@ -48,6 +48,12 @@ Route::get('/master/perawatan/{id}/edit', [MasterController::class, 'perawataned
 Route::delete('/master/perawatan/{id}', [MasterController::class, 'perawatandestroy'])->name('master.perawatandestroy');
 Route::put('/master/perawatan/{id}', [MasterController::class, 'perawatanupdate'])->name('master.perawatanupdate');
 
+// Master Users 
+Route::get('/master/users', [MasterController::class, 'users'])->name('master.users');
+Route::post('/master/usersstore', [MasterController::class, 'usersstore'])->name('master.usersstore');
+Route::get('/master/users/{id}', [MasterController::class, 'usersdestroy'])->name('master.usersdestroy');
+Route::put('/master/users/{id}', [MasterController::class, 'usersupdate'])->name('master.usersupdate');
+Route::get('/master/resetpassword/{id}', [MasterController::class, 'resetpassword'])->name('master.resetpassword');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 

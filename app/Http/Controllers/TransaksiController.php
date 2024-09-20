@@ -7,64 +7,107 @@ use App\Models\Transaksi;
 
 class TransaksiController extends Controller
 {
-    // app/Http/Controllers/TransaksiController.php
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
 public function index()
-{
-    $transaksis = Transaksi::all();
-    return view('transaksi.index', compact('transaksis'));
+{ 
+       $transaksis = Transaksi::selectRaw('
+            
+            
+            no_invoice,
+            MIN(tanggal) as tanggal, -- Mengambil tanggal terawal dalam setiap grup
+            MAX(nama_gerai) as nama_gerai, -- Mengambil nama gerai
+            MAX(nama_customer) as nama_customer, -- Mengambil nama customer
+            MAX(jenis_perawatan) as jenis_perawatan, -- Mengambil jenis perawatan
+            MAX(harga_treatment) as harga_treatment, -- Mengambil harga treatment
+            MAX(disc) as disc, -- Mengambil diskon
+            MAX(terapist) as terapist, -- Mengambil nama terapist
+            MAX(pembayaran) as pembayaran, -- Mengambil metode pembayaran
+            SUM(jumlah) as total_jumlah, -- Menjumlahkan total jumlah
+            MAX(komisi) as komisi, -- Mengambil komisi tertinggi
+            COUNT(*) as jml -- Menghitung jumlah record dalam setiap grup
+        ')
+        ->groupBy('no_invoice')
+        ->get();
+
+   return view('transaksi.index', compact('transaksis'));
+   
+    
+    
 }
 
 public function create()
 {
-    return view('transaksi.create');
+    $last_invoice = Transaksi::orderBy('id', 'desc')->value('no_invoice');
+    $last_invoice = substr($last_invoice, 4);
+    $next_invoice = sprintf('INV-%05d', (int) $last_invoice + 1);
+    return view('transaksi.create', compact('next_invoice'));
 }
 
 public function store(Request $request)
 {
-    $transaksi = new Transaksi();
-    $transaksi->tanggal = $request->input('tanggal');
-    $transaksi->nama_gerai = $request->input('nama_gerai');
-    $transaksi->no_invoice = $request->input('no_invoice');
-    $transaksi->nama_customer = $request->input('nama_customer');
-    $transaksi->jenis_perawatan = $request->input('jenis_perawatan');
-    $transaksi->harga_treatment = $request->input('harga_treatment');
-    $transaksi->disc = $request->input('disc');
-    $transaksi->terapist = $request->input('terapist');
-    $transaksi->pembayaran = $request->input('pembayaran');
-    $transaksi->save();
+    $detail_transaksi = $request->input('nama_customer');
+    foreach ($detail_transaksi as $key => $value) {
+        $transaksi = new Transaksi();
+        $transaksi->tanggal = $request->input('tanggal');
+        $transaksi->nama_gerai = $request->input('nama_gerai');
+        $transaksi->no_invoice = $request->input('no_invoice');
+        $transaksi->nama_customer = $value;
+        $transaksi->jenis_perawatan = $request->input('jenis_perawatan')[$key];
+        $transaksi->harga_treatment = $request->input('harga_treatment')[$key];
+        $transaksi->disc = $request->input('disc')[$key];
+        $transaksi->terapist = $request->input('terapist')[$key];
+        $transaksi->pembayaran = $request->input('pembayaran')[$key];
+        $transaksi->save();
+    }
 
     session()->flash('success', 'Data berhasil disimpan');
     return redirect()->route('transaksi');
 }
 
-public function edit($id)
+public function edit($no_invoice)
 {
-    $transaksi = Transaksi::find($id);
-    return view('transaksi.edit', compact('transaksi'));
+    $transaksi = Transaksi::where('no_invoice', $no_invoice)->firstOrFail();
+    $transaksi_detail = Transaksi::where('no_invoice', $no_invoice)->get();
+    return view('transaksi.edit', compact('transaksi', 'transaksi_detail'));
 }
 
-public function update(Request $request, $id)
+public function update(Request $request,  $no_invoice)
 {
-    $transaksi = Transaksi::find($id);
-    $transaksi->tanggal = $request->input('tanggal');
-    $transaksi->nama_gerai = $request->input('nama_gerai');
-    $transaksi->no_invoice = $request->input('no_invoice');
-    $transaksi->nama_customer = $request->input('nama_customer');
-    $transaksi->jenis_perawatan = $request->input('jenis_perawatan');
-    $transaksi->harga_treatment = $request->input('harga_treatment');
-    $transaksi->disc = $request->input('disc');
-    $transaksi->terapist = $request->input('terapist');
-    $transaksi->pembayaran = $request->input('pembayaran');
-    $transaksi->save();
+    //dd($request->all());
+    $transaksi = Transaksi::where('no_invoice', $no_invoice)->get();
+
+    foreach ($transaksi as $index => $t) {
+        // Mendapatkan nilai dari input, jika array gunakan [0], jika field tunggal cukup ambil nilainya saja
+        $t->tanggal = $request->input('tanggal'); // Bukan array, langsung ambil nilai
+        $t->nama_gerai = $request->input('nama_gerai'); // Bukan array, langsung ambil nilai
+        $t->nama_customer = $request->input('nama_customer'); // Bukan array, langsung ambil nilai
+        
+        // Input yang berupa array, akses menggunakan $index
+        $t->jenis_perawatan = $request->input('jenis_perawatan')[$index] ?? null;
+        $t->harga_treatment = $request->input('harga_treatment')[$index] ?? null;
+        $t->disc = $request->input('disc')[$index] ?? null;
+        $t->jumlah = $request->input('jumlah')[$index] ?? null;
+        $t->komisi = $request->input('komisi')[$index] ?? null;
+        
+        // Simpan perubahan
+        $t->save();
+    }
+    
     session()->flash('success', 'Data berhasil diupdate');
     return redirect()->route('transaksi');
+    
 }
 
-public function destroy($id)
+public function destroy($no_invoice)
 {
-    $transaksi = Transaksi::find($id);
-    $transaksi->delete();
+    $transaksi = Transaksi::where('no_invoice', $no_invoice)->get();
+    foreach ($transaksi as $t) {
+        $t->delete();
+    }
     session()->flash('success', 'Data berhasil dihapus');
     return redirect()->route('transaksi');
 }
