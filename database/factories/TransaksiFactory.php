@@ -18,7 +18,7 @@ class TransaksiFactory extends Factory
     {
         //protected $model = Transaksi::class;
         return [
-            'tanggal' => $this->faker->date(),
+            'tanggal' => $this->faker->dateTimeBetween('2024-05-01', '2024-09-21'),
             'nama_gerai' => $this->faker->company(),
             'no_invoice' => $this->faker->randomNumber(8),
             'nama_customer' => $this->faker->name(),

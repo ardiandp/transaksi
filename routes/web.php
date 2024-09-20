@@ -24,7 +24,7 @@ Route::get('/theme', function () {
 });
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile')->middleware('auth');
-
+Route::get('/chart-transaksi', [HomeController::class, 'chartTransaksi'])->name('chart-transaksi');
 
 // routes/web.php
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi');

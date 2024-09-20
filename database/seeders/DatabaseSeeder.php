@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         User::factory(10)->create();
-        Transaksi::factory(10)->create();
+        Transaksi::factory(30)->create();
         Gerai::factory(10)->create();
         Perawatan::factory(10)->create();
     }
