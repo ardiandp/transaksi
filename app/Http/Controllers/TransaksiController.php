@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
+use App\Models\Gerai;
+use App\Models\User;
 
 class TransaksiController extends Controller
 {
@@ -41,27 +43,40 @@ public function index()
 
 public function create()
 {
+    $gerai = Gerai::all();
     $last_invoice = Transaksi::orderBy('id', 'desc')->value('no_invoice');
     $last_invoice = substr($last_invoice, 4);
     $next_invoice = sprintf('INV-%05d', (int) $last_invoice + 1);
-    return view('transaksi.create', compact('next_invoice'));
+    $terapist = User::where('role', 'terapist')->get();
+    return view('transaksi.create', compact('gerai', 'next_invoice', 'terapist'));
 }
 
 public function store(Request $request)
 {
-    $detail_transaksi = $request->input('nama_customer');
-    foreach ($detail_transaksi as $key => $value) {
-        $transaksi = new Transaksi();
-        $transaksi->tanggal = $request->input('tanggal');
-        $transaksi->nama_gerai = $request->input('nama_gerai');
-        $transaksi->no_invoice = $request->input('no_invoice');
-        $transaksi->nama_customer = $value;
-        $transaksi->jenis_perawatan = $request->input('jenis_perawatan')[$key];
-        $transaksi->harga_treatment = $request->input('harga_treatment')[$key];
-        $transaksi->disc = $request->input('disc')[$key];
-        $transaksi->terapist = $request->input('terapist')[$key];
-        $transaksi->pembayaran = $request->input('pembayaran')[$key];
-        $transaksi->save();
+    /*dd($request->all());
+    $transaksi = new Transaksi();
+    $transaksi->tanggal = $request->input('tanggal');
+    $transaksi->nama_gerai = $request->input('nama_gerai');
+    $transaksi->no_invoice = $request->input('no_invoice');
+    $transaksi->nama_customer = $request->input('nama_customer');
+    $transaksi->terapist = $request->input('terapist');
+    $transaksi->pembayaran = $request->input('pembayaran');
+    $transaksi->save(); */
+
+    foreach ($request->input('jenis_perawatan') as $key => $value) {
+        $transaksi_detail = new Transaksi();
+        $transaksi_detail->tanggal = $request->input('tanggal');
+        $transaksi_detail->nama_gerai = $request->input('nama_gerai');
+        $transaksi_detail->no_invoice =$request->input('no_invoice');
+        $transaksi_detail->nama_customer = $request->input('nama_customer');
+        $transaksi_detail->jenis_perawatan = $value;
+        $transaksi_detail->harga_treatment = $request->input('harga_treatment')[$key];
+        $transaksi_detail->disc = $request->input('disc')[$key];
+        $transaksi_detail->terapist = $request->input('terapist');
+        $transaksi_detail->pembayaran = $request->input('pembayaran');
+        $transaksi_detail->jumlah = $request->input('jumlah')[$key];
+        $transaksi_detail->komisi = $request->input('komisi')[$key];
+        $transaksi_detail->save();
     }
 
     session()->flash('success', 'Data berhasil disimpan');

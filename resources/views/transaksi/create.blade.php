@@ -28,7 +28,12 @@
 
             <div class="form-group col-md-6">
                 <label for="nama_gerai">Nama Gerai</label>
-                <input type="text" class="form-control" id="nama_gerai" name="nama_gerai" required>
+                <select class="form-control" id="nama_gerai" name="nama_gerai" required>
+                    <option value="">-- Pilih Gerai --</option>
+                    @foreach ($gerai as $g)
+                        <option value="{{ $g->nama_gerai }}">{{ $g->nama_gerai }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
 
@@ -40,14 +45,32 @@
 
             <div class="form-group col-md-6">
                 <label for="terapist">Terapist</label>
-                <input type="text" class="form-control" id="terapist" name="terapist" required>
+                <select class="form-control" id="terapist" name="terapist" required>
+                    <option value="">-- Pilih Terapist --</option>
+                    @foreach ($terapist as $t)
+                        <option value="{{ $t->id }}">{{ $t->name }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-6">
+                <label for="nama_customer">Nama Customer</label>
+                <input type="text" class="form-control" id="nama_customer" name="nama_customer" required>
+            </div>
+            <div class="form-group col-md-6">
                 <label for="pembayaran">Pembayaran</label>
-                <input type="text" class="form-control" id="pembayaran" name="pembayaran" required>
+                <select class="form-control" id="pembayaran" name="pembayaran" required>
+                    <option value="">-- Pilih Pembayaran --</option>
+                    <option value="BCA">BCA</option>
+                    <option value="BNI">BNI</option>
+                    <option value="MANDIRI">MANDIRI</option>
+                    <option value="BANK MEGA">BANK MEGA</option>
+                    <option value="OVO">OVO</option>
+                    <option value="GOPAY">GOPAY</option>
+                    <option value="QRIS">QRIS</option>
+                </select>
             </div>
         </div>
 
@@ -57,7 +80,6 @@
                 <table class="table table-sm" id="table-detail-transaksi">
                     <thead>
                         <tr>
-                            <th>Nama Customer</th>
                             <th>Jenis Perawatan</th>
                             <th>Harga Treatment</th>
                             <th>Diskon</th>
@@ -68,9 +90,6 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>
-                                <input type="text" class="form-control" name="nama_customer[]" required>
-                            </td>
                             <td>
                                 <input type="text" class="form-control" name="jenis_perawatan[]" required>
                             </td>
@@ -108,15 +127,13 @@
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
             var cell6 = row.insertCell(5);
-            var cell7 = row.insertCell(6);
 
-            cell1.innerHTML = "<input type='text' class='form-control' name='nama_customer[]' required>";
-            cell2.innerHTML = "<input type='text' class='form-control' name='jenis_perawatan[]' required>";
-            cell3.innerHTML = "<input type='number' step='0.01' class='form-control' name='harga_treatment[]' required>";
-            cell4.innerHTML = "<input type='number' step='0.01' class='form-control' name='disc[]' >";
-            cell5.innerHTML = "<input type='number' step='0.01' class='form-control' name='jumlah[]' required>";
-            cell6.innerHTML = "<input type='number' step='0.01' class='form-control' name='komisi[]' >";
-            cell7.innerHTML = "<button type='button' class='btn btn-sm btn-danger' onclick='deleteRow(this)'><i class='fa fa-trash'></i></button>";
+            cell1.innerHTML = "<input type='text' class='form-control' name='jenis_perawatan[]' required>";
+            cell2.innerHTML = "<input type='number' step='0.01' class='form-control' name='harga_treatment[]' required>";
+            cell3.innerHTML = "<input type='number' step='0.01' class='form-control' name='disc[]' >";
+            cell4.innerHTML = "<input type='number' step='0.01' class='form-control' name='jumlah[]' required>";
+            cell5.innerHTML = "<input type='number' step='0.01' class='form-control' name='komisi[]' >";
+            cell6.innerHTML = "<button type='button' class='btn btn-sm btn-danger' onclick='deleteRow(this)'><i class='fa fa-trash'></i></button>";
         }
 
         function deleteRow(r) {
@@ -126,3 +143,4 @@
     </script>
 </div>
 @endsection
+
